@@ -1,7 +1,7 @@
 from .classes import Timer
-from .decorators import schedule, asynchronous, repeat, timer
+from .decorators import schedule, asynchronous, repeat, timer, recurring
 
-from .functions import delay, current, local, local_raw
+from .functions import delay, current, local, local_raw, countdown
 
 __version__ = "0.1.1"
 __all__ = [
@@ -13,5 +13,7 @@ __all__ = [
 	"timer",
 	"schedule",
 	"asynchronous",
-	"Timer"
+	"Timer",
+	"recurring",
+	"countdown"
 ]

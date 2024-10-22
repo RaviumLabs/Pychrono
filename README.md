@@ -9,8 +9,15 @@
 - Repeat functions multiple times.
 - Measure function execution time.
 - Use a robust `Timer` class with start, pause, resume, and elapsed time tracking.
+- Recurring task scheduling.
+- Countdown timers.
 
-## Changlogs 0.1.1
+## Changlogs
+### v0.1.2
+- Added a `@recurring` decorator : this decorator allows you to always execute a function every `interval` seconds.
+- Added a `.countdown(seconds, callback)` method : this method will execute the function `callback` in `seconds` seconds.
+
+### v0.1.1
 - `.elapsed` and `Timer` (\_\_str\_\_) now output a non-rounded string without "seconds" that led to type casting issues.
 
 ---
@@ -43,6 +50,14 @@ seconds = pychrono.current()
 formatted_time = pychrono.local(seconds)
 print(f"Local time: {formatted_time}")
 ```
+Start a countdown on a function
+```python
+def times_up():
+    print("Time's up!")
+
+# Start a countdown from 5 seconds
+pychrono.countdown_timer(5, times_up)
+```
 
 ### 2. Decorators
 Repeat Function Execution
@@ -62,6 +77,19 @@ def long_task():
 
 # Print the time taken to run the function
 long_task()
+```
+Always execute a Function on an interval
+```python
+@pychrono.recurring(2)  # Run every 2 seconds
+def print_message():
+    print("This message will print every 2 seconds.")
+
+# Start the recurring task
+print_message()
+
+# Prevent the main thread from exiting immediately
+while True:
+    time.sleep(1)
 ```
 Asynchronous Scheduling with Delay
 ```python
@@ -92,7 +120,7 @@ timer = pychrono.Timer()
 timer.start()
 
 # Perform some task
-time.sleep(2)
+pychrono.delay(2)
 
 # Get the elapsed time
 print(f"Elapsed: {timer}")  # Prints elapsed time in seconds (e.g., 2.0)
@@ -104,13 +132,12 @@ timer.pause()
 timer.resume()
 
 # Get updated elapsed time
-time.sleep(1)
+pychrono.delay(1)
 print(f"Updated Elapsed: {timer}")  # Prints updated elapsed time (e.g., 3.0)
 ```
 ## More Features Coming Soon!
 Stay tuned for more functionalities such as:
 
-- Recurring scheduled tasks.
 - Enhanced threading control and task management.
 - Time zone support for easier global time handling.
 - And much more!

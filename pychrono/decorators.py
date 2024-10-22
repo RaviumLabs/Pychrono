@@ -86,3 +86,63 @@ def repeat(number):
                 func(*args, **kwargs)
         return wrapper
     return deco_repeat
+
+# Recurring decorator
+def recurring(interval):
+    """
+    Decorator to repeatedly execute a function at a specified interval.
+
+    Args:
+        interval (int): Time in milliseconds between each execution of the function.
+
+    Raises:
+        ValueError: If the interval is not a positive integer.
+
+    Returns:
+        function: A wrapped function that will run in a background thread at the specified interval.
+    """
+
+    # Validate that the interval is a positive integer
+    if not isinstance(interval, int) or interval <= 0:
+        raise ValueError("Interval must be a positive integer representing milliseconds.")
+
+    def deco_recurring(func):
+        """
+        Inner decorator function to wrap the original function.
+
+        Args:
+            func (function): The function to be executed repeatedly.
+
+        Returns:
+            function: The wrapped function which starts a recurring task in a thread.
+        """
+
+        def wrapper(*args, **kwargs):
+            """
+            The actual function that runs in a separate thread and calls the decorated function repeatedly.
+
+            Args:
+                *args, **kwargs: Arguments and keyword arguments to pass to the decorated function.
+            """
+
+            def run_recurring():
+                """
+                Internal function to handle the repeated execution of the decorated function.
+                This function runs in an infinite loop with a delay between each iteration.
+                """
+                while True:
+                    try:
+                        func(*args, **kwargs)  # Call the original function
+                    except Exception as e:
+                        print(f"An error occurred while executing the recurring task: {e}")
+                    time.sleep(interval / 1000)  # Convert milliseconds to seconds for time.sleep
+
+            # Start the recurring task in a new thread
+            thread = threading.Thread(target=run_recurring)
+            thread.daemon = True  # Daemon thread will stop when the main program exits
+            thread.start()
+
+        # Return the wrapper, but don't call it immediately
+        return wrapper
+
+    return deco_recurring

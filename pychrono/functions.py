@@ -1,4 +1,5 @@
 import time
+import threading
 
 # Delay function
 def delay(milliseconds):
@@ -59,3 +60,39 @@ def monotonic():
         float: The value of a monotonic clock.
     """
     return time.monotonic()
+
+# Countdown function
+def countdown(seconds, callback):
+    """
+    Starts a countdown timer and calls the callback function when the time is up.
+
+    Args:
+        seconds (int): Number of seconds to countdown.
+        callback (function): Function to be called when the countdown finishes.
+
+    Raises:
+        ValueError: If 'seconds' is not a positive integer.
+    """
+
+    # Validate input
+    if not isinstance(seconds, int) or seconds <= 0:
+        raise ValueError("The 'seconds' parameter must be a positive integer.")
+
+    def countdown_timer():
+        """
+        Inner function that runs the countdown in a separate thread.
+        It decrements the seconds and calls the callback when done.
+        """
+        nonlocal seconds  # Use 'nonlocal' to modify the outer 'seconds' variable
+        while seconds > 0:
+            time.sleep(1)  # Sleep for 1 second
+            seconds -= 1
+
+        try:
+            callback()  # Call the callback function when the countdown finishes
+        except Exception as e:
+            print(f"Error occurred while executing the callback: {e}")
+
+    # Start the countdown in a new thread
+    thread = threading.Thread(target=countdown_timer)
+    thread.start()
