@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pychrono"
+version = "0.0.1"
+authors = [
+  { name="Sébastien", email="sebastien.works@outlook.com" },
+]
+description = "Pychrono is a Python package for managing delays, scheduling tasks, and timing functions. It supports both synchronous and async operations, making time management simple and efficient."
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/striatp/Pychrono"
