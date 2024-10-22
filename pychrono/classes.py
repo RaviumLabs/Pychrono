@@ -67,4 +67,4 @@ class Timer:
         Returns:
             str: Elapsed time in seconds, rounded to 3 decimal places.
         """
-        return f"{round(self.elapsed(), 3)} seconds"
+        return f"{self.elapsed()}"

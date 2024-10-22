@@ -10,6 +10,9 @@
 - Measure function execution time.
 - Use a robust `Timer` class with start, pause, resume, and elapsed time tracking.
 
+## Changlogs 0.1.1
+- `.elapsed` and `Timer` (\_\_str\_\_) now output a non-rounded string without "seconds" that led to type casting issues.
+
 ---
 
 ## Installation
