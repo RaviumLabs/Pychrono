@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pychrono"
-version = "0.1.1"
+version = "0.1.2"
 authors = [
   { name="Sébastien", email="sebastien.works@outlook.com" },
 ]

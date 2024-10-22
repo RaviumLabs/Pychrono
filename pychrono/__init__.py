@@ -3,7 +3,7 @@ from .decorators import schedule, asynchronous, repeat, timer, recurring
 
 from .functions import delay, current, local, local_raw, countdown
 
-__version__ = "0.1.1"
+__version__ = "0.1.2"
 __all__ = [
 	"delay",
 	"current",
