@@ -26,7 +26,7 @@ def asynchronous(func):
     return wrapper
 
 # Cached decorator : approved
-def cached(func):
+def cache(func):
     """
     A decorator that caches the results of a function based on its arguments.
 
