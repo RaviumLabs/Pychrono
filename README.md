@@ -1,5 +1,10 @@
 # Pychrono
 
+[![Downloads](https://static.pepy.tech/badge/pychrono)](https://pepy.tech/project/pychrono)
+[![PyPI version](https://badge.fury.io/py/pychrono.svg)](https://pypi.org/project/pychrono/)
+[![Build Status](https://github.com/striatp/Pychrono/actions/workflows/main.yml/badge.svg)](https://github.com/striatp/Pychrono/actions)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 **Pychrono** is a Python package designed for managing delays, scheduling tasks, timing functions, and more. It provides decorators for repeating tasks, scheduling actions, and running tasks asynchronously using threading. Pychrono simplifies time-related operations for both synchronous and asynchronous contexts.
 
 ## Features
