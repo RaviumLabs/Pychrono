@@ -68,3 +68,8 @@ class Timer:
             str: Elapsed time in seconds, rounded to 3 decimal places.
         """
         return f"{self.elapsed()}"
+
+# Class for raised timeout exception
+class TimeoutError(Exception):
+    """Custom exception for timeout handling."""
+    pass

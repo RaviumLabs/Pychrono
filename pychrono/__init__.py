@@ -1,9 +1,9 @@
 from .classes import Timer
-from .decorators import schedule, asynchronous, repeat, timer, recurring
+from .decorators import asynchronous, cached, schedule, recurring, repeat, retry, throttle, timed_cache, timeout, timer, validate
 
 from .functions import delay, current, local, local_raw, countdown
 
-__version__ = "0.1.2"
+__version__ = "1.0.0"
 __all__ = [
 	"delay",
 	"current",
@@ -15,5 +15,11 @@ __all__ = [
 	"asynchronous",
 	"Timer",
 	"recurring",
-	"countdown"
+	"countdown",
+	"cached",
+	"throttle",
+	"retry",
+	"timeout",
+	"validate",
+	"timed_cache"
 ]
