@@ -5,7 +5,7 @@
 [![Build Status](https://github.com/striatp/Pychrono/actions/workflows/main.yml/badge.svg)](https://github.com/striatp/Pychrono/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-**Pychrono** is a Python package designed for managing delays, scheduling tasks, timing functions, and more. It provides decorators for repeating tasks, scheduling actions, and running tasks asynchronously using threading. Pychrono simplifies time-related operations for both synchronous and asynchronous contexts. [View on PyPi](https/pypi.org/project/pychrono)
+**Pychrono** is a Python package designed for managing delays, scheduling tasks, timing functions, and more. It provides decorators for repeating tasks, scheduling actions, and running tasks asynchronously using threading. Pychrono simplifies time-related operations for both synchronous and asynchronous contexts. [View on PyPi](https://pypi.org/project/pychrono)
 
 ## Features
 - **Delay execution** for a specific amount of time.
@@ -15,16 +15,33 @@
 - **Measure function execution time**.
 - **Recurring task scheduling**.
 - **Countdown timers**.
-- **Cache function results** with expiration.
 - **Retry functions** if they fail.
 - **Limit function execution** rate.
 - **Impose an execution timeout**.
 - **Validate function arguments**.
-- **Throttle function calls** to avoid frequent executions.
+- **Throttling function calls** to avoid frequent executions.
+- **Calculate time differences** between two timestamps.
+- **Uptime** tracking since program launch.
+- **Program start time** retrieval.
 
 ## Changelog
 
-For the next update, we are aiming to rework and enhance our existing functions and add new ones.
+### v1.1.0: Enhanced Functionality
+This update focuses on enhancing existing functions and adding new ones for better usability and functionality.
+
+**Added Functions:**
+- `sleep_until(target_time)`: Pause execution until a specific time.
+- `callback_timer(seconds, callback)`: Executes a callback function after a specified delay.
+- `elapsed()`: Returns the program's elapsed time since the start.
+- `repeat_for(duration, task)`: Repeats a task for a specified duration.
+- `run_retry(seconds, task, retries)`: Attempts to run a task after a specified delay, retrying a given number of times if it fails.
+- `schedule_at(delay, callback)`: Schedules a callback function to be called after a specified delay using threading.
+- `time_diff(start, end)`: Calculate the difference in seconds between two timestamps.
+- `uptime()`: Returns the system's uptime in seconds since the program was launched.
+- `start_time()`: Returns the exact start time of the program in seconds since the epoch.
+
+**Documentation:**
+- Updated the docstrings and examples for all functions.
 
 ### v1.0.0: Public Release
 This update focuses on enhancing and expanding the decorators.
@@ -36,19 +53,9 @@ This update focuses on enhancing and expanding the decorators.
 - `@timeout`: A decorator that imposes an execution time limit on a function.
 - `@validate`: A decorator to validate the types of a function's arguments.
 - `@timed_cache`: A decorator that caches results with an expiration period.
-  
+
 **Fixed Decorators:**
 - `@schedule`: Improved for consistent execution timing.
-
-**Documentation:**
-- Updated the docstrings and examples of all decorators.
-
-### v0.1.2
-- Added a `@recurring` decorator to always execute a function at specified intervals.
-- Added a `.countdown(seconds, callback)` method to execute a function after a countdown.
-
-### v0.1.1
-- `.elapsed` and `Timer` (`__str__`) now output a non-rounded string without "seconds" to avoid type casting issues.
 
 ---
 
@@ -62,39 +69,91 @@ pip install pychrono
 
 ### 1. Delays and Time Functions
 
-#### Delay Execution
+#### Sleep Until
 ```python
 import pychrono
 
-# Delay execution for 1000 milliseconds (1 second)
-pychrono.delay(1000)
+# Sleep until a specific time (5 seconds from now)
+target_time = pychrono.current() + 5
+pychrono.sleep_until(target_time)
+print("Woke up after 5 seconds!")
 ```
 
-#### Get Current Time
+#### Callback Timer
 ```python
-# Get the current time in seconds since the epoch
-current_time = pychrono.current()
-print(f"Current time: {current_time}")
+def task():
+    print("Task executed after delay!")
+
+# Schedule a task to run after 3 seconds
+pychrono.callback_timer(3, task)
 ```
 
-#### Convert Time to Local String
+#### Elapsed Time
 ```python
-# Convert time to a readable local time string
-seconds = pychrono.current()
-formatted_time = pychrono.local(seconds)
-print(f"Local time: {formatted_time}")
+# Get elapsed time since the program started
+print(f"Elapsed Time: {pychrono.elapsed()} seconds")
 ```
 
-#### Start a Countdown on a Function
+#### Repeat For Duration
 ```python
-def times_up():
-    print("Time's up!")
+def say_hello():
+    print("Hello!")
 
-# Start a countdown from 5 seconds
-pychrono.countdown(5, times_up)
+# Repeat saying hello for 5 seconds
+pychrono.repeat_for(5, say_hello)
 ```
 
-### 2. Decorators
+#### Run Retry Function
+```python
+import random
+
+def unstable_task():
+    if random.random() < 0.5:
+        raise Exception("Failed!")
+    print("Task succeeded!")
+
+# Retry the task up to 3 times with a 2-second delay between attempts
+pychrono.run_retry(2, unstable_task, retries=3)
+```
+
+#### Schedule At
+```python
+def scheduled_task():
+    print("This task was scheduled!")
+
+# Schedule a task to run after 4 seconds
+pychrono.schedule_at(4, scheduled_task)
+```
+
+### 2. Time Difference Calculation
+```python
+start = time.time()
+pychrono.delay(2)  # Simulating a task that takes 2 seconds
+end = time.time()
+
+# Calculate the time difference
+difference = pychrono.time_diff(start, end)
+print(f"Time difference: {difference} seconds")
+```
+
+### 3. Uptime and Start Time
+```python
+# Get program uptime
+print(f"Uptime: {pychrono.uptime()} seconds")
+
+# Get program start time
+print(f"Start Time: {pychrono.start_time()} seconds since the epoch")
+```
+
+### 4. Scheduling Functions
+
+#### Schedule a Task
+```python
+# Schedule a task to run after 2 seconds
+pychrono.schedule_at(2, say_hello)  # Prints "Hello!" after 2 seconds
+```
+
+### 5. Decorators
 
 #### Repeat Function Execution
 ```python
@@ -186,7 +245,7 @@ while True:
 
 #### Schedule a Task with Delay (`@schedule`)
 ```python
-@pychrono.schedule(2000)  # Delay for 2000 milliseconds (2 seconds)
+@pychrono.schedule(2)  # Delay for 2 seconds
 def say_hello():
     print("Hello after 2 seconds!")
 
@@ -202,35 +261,6 @@ def task():
 task()  # Runs in a separate thread
 ```
 
-### 3. Timer Class
-
-The `Timer` class allows you to start, pause, resume, and get the elapsed time. Printing the timer object directly will output the seconds elapsed.
-
-#### Start, Pause, and Resume Timer
-```python
-# Create a timer instance
-timer = pychrono.Timer()
-
-# Start the timer
-timer.start()
-
-# Perform some task
-pychrono.delay(2000)  # Delay for 2 seconds
-
-# Get the elapsed time
-print(f"Elapsed: {timer}")  # Prints elapsed time in seconds (e.g., 2.0)
-
-# Pause the timer
-timer.pause()
-
-# Resume the timer
-timer.resume()
-
-# Get updated elapsed time
-pychrono.delay(1000)  # Delay for 1 more second
-print(f"Updated Elapsed: {timer}")  # Prints updated elapsed time (e.g., 3.0)
-```
-
 ## More Features Coming Soon!
 Stay tuned for more functionalities such as:
 - Enhanced threading control and task management.
@@ -241,5 +271,3 @@ Feel free to contribute to the project, raise issues, or suggest features by vis
 
 ### License
 Pychrono is licensed under the MIT License.
-
----
